@@ -40,7 +40,7 @@ interface Todo {
 const todos: Todo[] = [];
 
 // GET /api/todos - Get all todos
-router.get('/', (req: Request, res: Response) => {
+router.get('/', (req: Request, res: Response): void => {
   const { type, priority, completed, tag, search, dueBefore, dueAfter } = req.query;
   
   let filtered = [...todos];
@@ -125,7 +125,7 @@ router.get('/', (req: Request, res: Response) => {
 });
 
 // GET /api/todos/types - Get available todo types
-router.get('/types', (_req: Request, res: Response) => {
+router.get('/types', (_req: Request, res: Response): void => {
   res.json({
     success: true,
     data: [
@@ -141,14 +141,15 @@ router.get('/types', (_req: Request, res: Response) => {
 });
 
 // GET /api/todos/:id - Get single todo
-router.get('/:id', (req: Request, res: Response) => {
+router.get('/:id', (req: Request, res: Response): void => {
   const todo = todos.find((t) => t.id === req.params.id);
   
   if (!todo) {
-    return res.status(404).json({
+    res.status(404).json({
       success: false,
       error: { message: 'Todo not found' },
     });
+    return;
   }
 
   res.json({
@@ -158,7 +159,7 @@ router.get('/:id', (req: Request, res: Response) => {
 });
 
 // POST /api/todos - Create todo
-router.post('/', (req: Request, res: Response) => {
+router.post('/', (req: Request, res: Response): void => {
   const { 
     type = 'task',
     title, 
@@ -174,19 +175,21 @@ router.post('/', (req: Request, res: Response) => {
   } = req.body;
 
   if (!title) {
-    return res.status(400).json({
+    res.status(400).json({
       success: false,
       error: { message: 'Title is required' },
     });
+    return;
   }
 
   // Validate type
   const validTypes: TodoType[] = ['task', 'goal', 'habit', 'reminder', 'shopping', 'idea', 'bookmark'];
   if (!validTypes.includes(type)) {
-    return res.status(400).json({
+    res.status(400).json({
       success: false,
       error: { message: `Invalid type. Must be one of: ${validTypes.join(', ')}` },
     });
+    return;
   }
 
   const todo: Todo = {
@@ -216,14 +219,15 @@ router.post('/', (req: Request, res: Response) => {
 });
 
 // PUT /api/todos/:id - Update todo
-router.put('/:id', (req: Request, res: Response) => {
+router.put('/:id', (req: Request, res: Response): void => {
   const index = todos.findIndex((t) => t.id === req.params.id);
   
   if (index === -1) {
-    return res.status(404).json({
+    res.status(404).json({
       success: false,
       error: { message: 'Todo not found' },
     });
+    return;
   }
 
   const { 
@@ -272,14 +276,15 @@ router.put('/:id', (req: Request, res: Response) => {
 });
 
 // PATCH /api/todos/:id/complete - Toggle completion
-router.patch('/:id/complete', (req: Request, res: Response) => {
+router.patch('/:id/complete', (req: Request, res: Response): void => {
   const index = todos.findIndex((t) => t.id === req.params.id);
   
   if (index === -1) {
-    return res.status(404).json({
+    res.status(404).json({
       success: false,
       error: { message: 'Todo not found' },
     });
+    return;
   }
 
   const newCompleted = !todos[index].isCompleted;
@@ -297,14 +302,15 @@ router.patch('/:id/complete', (req: Request, res: Response) => {
 });
 
 // DELETE /api/todos/:id - Delete todo
-router.delete('/:id', (req: Request, res: Response) => {
+router.delete('/:id', (req: Request, res: Response): void => {
   const index = todos.findIndex((t) => t.id === req.params.id);
   
   if (index === -1) {
-    return res.status(404).json({
+    res.status(404).json({
       success: false,
       error: { message: 'Todo not found' },
     });
+    return;
   }
 
   const deleted = todos.splice(index, 1)[0];

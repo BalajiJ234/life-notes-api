@@ -18,7 +18,7 @@ interface Note {
 const notes: Note[] = [];
 
 // GET /api/notes - Get all notes
-router.get('/', (req: Request, res: Response) => {
+router.get('/', (req: Request, res: Response): void => {
   const { tag, pinned, search } = req.query;
   
   let filtered = [...notes];
@@ -58,14 +58,15 @@ router.get('/', (req: Request, res: Response) => {
 });
 
 // GET /api/notes/:id - Get single note
-router.get('/:id', (req: Request, res: Response) => {
+router.get('/:id', (req: Request, res: Response): void => {
   const note = notes.find((n) => n.id === req.params.id);
   
   if (!note) {
-    return res.status(404).json({
+    res.status(404).json({
       success: false,
       error: { message: 'Note not found' },
     });
+    return;
   }
 
   res.json({
@@ -75,14 +76,15 @@ router.get('/:id', (req: Request, res: Response) => {
 });
 
 // POST /api/notes - Create note
-router.post('/', (req: Request, res: Response) => {
+router.post('/', (req: Request, res: Response): void => {
   const { title, content = '', tags = [], isPinned = false } = req.body;
 
   if (!title) {
-    return res.status(400).json({
+    res.status(400).json({
       success: false,
       error: { message: 'Title is required' },
     });
+    return;
   }
 
   const note: Note = {
@@ -104,14 +106,15 @@ router.post('/', (req: Request, res: Response) => {
 });
 
 // PUT /api/notes/:id - Update note
-router.put('/:id', (req: Request, res: Response) => {
+router.put('/:id', (req: Request, res: Response): void => {
   const index = notes.findIndex((n) => n.id === req.params.id);
   
   if (index === -1) {
-    return res.status(404).json({
+    res.status(404).json({
       success: false,
       error: { message: 'Note not found' },
     });
+    return;
   }
 
   const { title, content, tags, isPinned } = req.body;
@@ -132,14 +135,15 @@ router.put('/:id', (req: Request, res: Response) => {
 });
 
 // DELETE /api/notes/:id - Delete note
-router.delete('/:id', (req: Request, res: Response) => {
+router.delete('/:id', (req: Request, res: Response): void => {
   const index = notes.findIndex((n) => n.id === req.params.id);
   
   if (index === -1) {
-    return res.status(404).json({
+    res.status(404).json({
       success: false,
       error: { message: 'Note not found' },
     });
+    return;
   }
 
   const deleted = notes.splice(index, 1)[0];
