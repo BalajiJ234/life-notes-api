@@ -4,13 +4,13 @@ import { v4 as uuidv4 } from 'uuid';
 const router = Router();
 
 // Todo types (7 types as per Life Notes app)
-export type TodoType = 
-  | 'task'      // General tasks
-  | 'goal'      // Long-term goals
-  | 'habit'     // Daily habits
-  | 'reminder'  // Time-based reminders
-  | 'shopping'  // Shopping list items
-  | 'idea'      // Ideas to explore
+export type TodoType =
+  | 'task' // General tasks
+  | 'goal' // Long-term goals
+  | 'habit' // Daily habits
+  | 'reminder' // Time-based reminders
+  | 'shopping' // Shopping list items
+  | 'idea' // Ideas to explore
   | 'bookmark'; // Links/resources to save
 
 // Priority levels
@@ -28,9 +28,9 @@ interface Todo {
   tags: string[];
   // Type-specific fields
   habitFrequency?: 'daily' | 'weekly' | 'monthly'; // For habits
-  reminderTime?: string;  // For reminders
-  url?: string;           // For bookmarks
-  quantity?: number;      // For shopping
+  reminderTime?: string; // For reminders
+  url?: string; // For bookmarks
+  quantity?: number; // For shopping
   createdAt: string;
   updatedAt: string;
   completedAt: string | null;
@@ -42,50 +42,51 @@ const todos: Todo[] = [];
 // GET /api/todos - Get all todos
 router.get('/', (req: Request, res: Response): void => {
   const { type, priority, completed, tag, search, dueBefore, dueAfter } = req.query;
-  
+
   let filtered = [...todos];
-  
+
   // Filter by type
   if (type) {
-    filtered = filtered.filter(t => t.type === type);
+    filtered = filtered.filter((t) => t.type === type);
   }
-  
+
   // Filter by priority
   if (priority) {
-    filtered = filtered.filter(t => t.priority === priority);
+    filtered = filtered.filter((t) => t.priority === priority);
   }
-  
+
   // Filter by completion status
   if (completed !== undefined) {
-    filtered = filtered.filter(t => t.isCompleted === (completed === 'true'));
+    filtered = filtered.filter((t) => t.isCompleted === (completed === 'true'));
   }
-  
+
   // Filter by tag
   if (tag) {
-    filtered = filtered.filter(t => t.tags.includes(tag as string));
+    filtered = filtered.filter((t) => t.tags.includes(tag as string));
   }
-  
+
   // Search in title and description
   if (search) {
     const searchLower = (search as string).toLowerCase();
-    filtered = filtered.filter(t => 
-      t.title.toLowerCase().includes(searchLower) ||
-      t.description.toLowerCase().includes(searchLower)
+    filtered = filtered.filter(
+      (t) =>
+        t.title.toLowerCase().includes(searchLower) ||
+        t.description.toLowerCase().includes(searchLower)
     );
   }
-  
+
   // Filter by due date range
   if (dueBefore) {
-    filtered = filtered.filter(t => 
-      t.dueDate && new Date(t.dueDate) <= new Date(dueBefore as string)
+    filtered = filtered.filter(
+      (t) => t.dueDate && new Date(t.dueDate) <= new Date(dueBefore as string)
     );
   }
   if (dueAfter) {
-    filtered = filtered.filter(t => 
-      t.dueDate && new Date(t.dueDate) >= new Date(dueAfter as string)
+    filtered = filtered.filter(
+      (t) => t.dueDate && new Date(t.dueDate) >= new Date(dueAfter as string)
     );
   }
-  
+
   // Sort: incomplete first, then by priority, then by dueDate
   const priorityOrder = { urgent: 0, high: 1, medium: 2, low: 3 };
   filtered.sort((a, b) => {
@@ -110,16 +111,16 @@ router.get('/', (req: Request, res: Response): void => {
     meta: {
       total: filtered.length,
       byType: {
-        task: filtered.filter(t => t.type === 'task').length,
-        goal: filtered.filter(t => t.type === 'goal').length,
-        habit: filtered.filter(t => t.type === 'habit').length,
-        reminder: filtered.filter(t => t.type === 'reminder').length,
-        shopping: filtered.filter(t => t.type === 'shopping').length,
-        idea: filtered.filter(t => t.type === 'idea').length,
-        bookmark: filtered.filter(t => t.type === 'bookmark').length,
+        task: filtered.filter((t) => t.type === 'task').length,
+        goal: filtered.filter((t) => t.type === 'goal').length,
+        habit: filtered.filter((t) => t.type === 'habit').length,
+        reminder: filtered.filter((t) => t.type === 'reminder').length,
+        shopping: filtered.filter((t) => t.type === 'shopping').length,
+        idea: filtered.filter((t) => t.type === 'idea').length,
+        bookmark: filtered.filter((t) => t.type === 'bookmark').length,
       },
-      completed: filtered.filter(t => t.isCompleted).length,
-      pending: filtered.filter(t => !t.isCompleted).length,
+      completed: filtered.filter((t) => t.isCompleted).length,
+      pending: filtered.filter((t) => !t.isCompleted).length,
     },
   });
 });
@@ -143,7 +144,7 @@ router.get('/types', (_req: Request, res: Response): void => {
 // GET /api/todos/:id - Get single todo
 router.get('/:id', (req: Request, res: Response): void => {
   const todo = todos.find((t) => t.id === req.params.id);
-  
+
   if (!todo) {
     res.status(404).json({
       success: false,
@@ -160,9 +161,9 @@ router.get('/:id', (req: Request, res: Response): void => {
 
 // POST /api/todos - Create todo
 router.post('/', (req: Request, res: Response): void => {
-  const { 
+  const {
     type = 'task',
-    title, 
+    title,
     description = '',
     priority = 'medium',
     dueDate = null,
@@ -183,7 +184,15 @@ router.post('/', (req: Request, res: Response): void => {
   }
 
   // Validate type
-  const validTypes: TodoType[] = ['task', 'goal', 'habit', 'reminder', 'shopping', 'idea', 'bookmark'];
+  const validTypes: TodoType[] = [
+    'task',
+    'goal',
+    'habit',
+    'reminder',
+    'shopping',
+    'idea',
+    'bookmark',
+  ];
   if (!validTypes.includes(type)) {
     res.status(400).json({
       success: false,
@@ -221,7 +230,7 @@ router.post('/', (req: Request, res: Response): void => {
 // PUT /api/todos/:id - Update todo
 router.put('/:id', (req: Request, res: Response): void => {
   const index = todos.findIndex((t) => t.id === req.params.id);
-  
+
   if (index === -1) {
     res.status(404).json({
       success: false,
@@ -230,12 +239,12 @@ router.put('/:id', (req: Request, res: Response): void => {
     return;
   }
 
-  const { 
-    title, 
-    description, 
-    priority, 
-    isCompleted, 
-    dueDate, 
+  const {
+    title,
+    description,
+    priority,
+    isCompleted,
+    dueDate,
     tags,
     habitFrequency,
     reminderTime,
@@ -278,7 +287,7 @@ router.put('/:id', (req: Request, res: Response): void => {
 // PATCH /api/todos/:id/complete - Toggle completion
 router.patch('/:id/complete', (req: Request, res: Response): void => {
   const index = todos.findIndex((t) => t.id === req.params.id);
-  
+
   if (index === -1) {
     res.status(404).json({
       success: false,
@@ -304,7 +313,7 @@ router.patch('/:id/complete', (req: Request, res: Response): void => {
 // DELETE /api/todos/:id - Delete todo
 router.delete('/:id', (req: Request, res: Response): void => {
   const index = todos.findIndex((t) => t.id === req.params.id);
-  
+
   if (index === -1) {
     res.status(404).json({
       success: false,

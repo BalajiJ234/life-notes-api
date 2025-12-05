@@ -20,28 +20,28 @@ const notes: Note[] = [];
 // GET /api/notes - Get all notes
 router.get('/', (req: Request, res: Response): void => {
   const { tag, pinned, search } = req.query;
-  
+
   let filtered = [...notes];
-  
+
   // Filter by tag
   if (tag) {
-    filtered = filtered.filter(n => n.tags.includes(tag as string));
+    filtered = filtered.filter((n) => n.tags.includes(tag as string));
   }
-  
+
   // Filter by pinned status
   if (pinned !== undefined) {
-    filtered = filtered.filter(n => n.isPinned === (pinned === 'true'));
+    filtered = filtered.filter((n) => n.isPinned === (pinned === 'true'));
   }
-  
+
   // Search in title and content
   if (search) {
     const searchLower = (search as string).toLowerCase();
-    filtered = filtered.filter(n => 
-      n.title.toLowerCase().includes(searchLower) ||
-      n.content.toLowerCase().includes(searchLower)
+    filtered = filtered.filter(
+      (n) =>
+        n.title.toLowerCase().includes(searchLower) || n.content.toLowerCase().includes(searchLower)
     );
   }
-  
+
   // Sort: pinned first, then by updatedAt
   filtered.sort((a, b) => {
     if (a.isPinned !== b.isPinned) return a.isPinned ? -1 : 1;
@@ -60,7 +60,7 @@ router.get('/', (req: Request, res: Response): void => {
 // GET /api/notes/:id - Get single note
 router.get('/:id', (req: Request, res: Response): void => {
   const note = notes.find((n) => n.id === req.params.id);
-  
+
   if (!note) {
     res.status(404).json({
       success: false,
@@ -108,7 +108,7 @@ router.post('/', (req: Request, res: Response): void => {
 // PUT /api/notes/:id - Update note
 router.put('/:id', (req: Request, res: Response): void => {
   const index = notes.findIndex((n) => n.id === req.params.id);
-  
+
   if (index === -1) {
     res.status(404).json({
       success: false,
@@ -137,7 +137,7 @@ router.put('/:id', (req: Request, res: Response): void => {
 // DELETE /api/notes/:id - Delete note
 router.delete('/:id', (req: Request, res: Response): void => {
   const index = notes.findIndex((n) => n.id === req.params.id);
-  
+
   if (index === -1) {
     res.status(404).json({
       success: false,

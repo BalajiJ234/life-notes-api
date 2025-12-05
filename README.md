@@ -4,10 +4,10 @@
 
 ## 🚀 Live URLs
 
-| Environment | URL |
-|-------------|-----|
+| Environment         | URL                               |
+| ------------------- | --------------------------------- |
 | Production (Future) | `https://api.balaji-dev.in/notes` |
-| Local Development | `http://localhost:3002` |
+| Local Development   | `http://localhost:3002`           |
 
 ## 🏗️ Tech Stack
 
@@ -80,40 +80,42 @@ docker-compose up --build
 
 ### Health Check
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/health` | Health status |
-| GET | `/api/health/ready` | Readiness check (K8s) |
-| GET | `/api/health/live` | Liveness check (K8s) |
+| Method | Endpoint            | Description           |
+| ------ | ------------------- | --------------------- |
+| GET    | `/api/health`       | Health status         |
+| GET    | `/api/health/ready` | Readiness check (K8s) |
+| GET    | `/api/health/live`  | Liveness check (K8s)  |
 
 ### Notes
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/notes` | Get all notes |
-| GET | `/api/notes/:id` | Get single note |
-| POST | `/api/notes` | Create note |
-| PUT | `/api/notes/:id` | Update note |
-| DELETE | `/api/notes/:id` | Delete note |
+| Method | Endpoint         | Description     |
+| ------ | ---------------- | --------------- |
+| GET    | `/api/notes`     | Get all notes   |
+| GET    | `/api/notes/:id` | Get single note |
+| POST   | `/api/notes`     | Create note     |
+| PUT    | `/api/notes/:id` | Update note     |
+| DELETE | `/api/notes/:id` | Delete note     |
 
 **Query Parameters:**
+
 - `tag` - Filter by tag
 - `pinned` - Filter by pinned status (true/false)
 - `search` - Search in title and content
 
 ### Todos (7 Types)
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/todos` | Get all todos |
-| GET | `/api/todos/types` | Get available todo types |
-| GET | `/api/todos/:id` | Get single todo |
-| POST | `/api/todos` | Create todo |
-| PUT | `/api/todos/:id` | Update todo |
-| PATCH | `/api/todos/:id/complete` | Toggle completion |
-| DELETE | `/api/todos/:id` | Delete todo |
+| Method | Endpoint                  | Description              |
+| ------ | ------------------------- | ------------------------ |
+| GET    | `/api/todos`              | Get all todos            |
+| GET    | `/api/todos/types`        | Get available todo types |
+| GET    | `/api/todos/:id`          | Get single todo          |
+| POST   | `/api/todos`              | Create todo              |
+| PUT    | `/api/todos/:id`          | Update todo              |
+| PATCH  | `/api/todos/:id/complete` | Toggle completion        |
+| DELETE | `/api/todos/:id`          | Delete todo              |
 
 **Query Parameters:**
+
 - `type` - Filter by type (task, goal, habit, reminder, shopping, idea, bookmark)
 - `priority` - Filter by priority (low, medium, high, urgent)
 - `completed` - Filter by completion status (true/false)
@@ -124,15 +126,15 @@ docker-compose up --build
 
 ## 📝 Todo Types
 
-| Type | Icon | Description |
-|------|------|-------------|
-| `task` | ✅ | General tasks to complete |
-| `goal` | 🎯 | Long-term goals to achieve |
-| `habit` | 🔄 | Daily/weekly habits to track |
-| `reminder` | ⏰ | Time-based reminders |
-| `shopping` | 🛒 | Shopping list items |
-| `idea` | 💡 | Ideas to explore later |
-| `bookmark` | 🔖 | Links and resources to save |
+| Type       | Icon | Description                  |
+| ---------- | ---- | ---------------------------- |
+| `task`     | ✅   | General tasks to complete    |
+| `goal`     | 🎯   | Long-term goals to achieve   |
+| `habit`    | 🔄   | Daily/weekly habits to track |
+| `reminder` | ⏰   | Time-based reminders         |
+| `shopping` | 🛒   | Shopping list items          |
+| `idea`     | 💡   | Ideas to explore later       |
+| `bookmark` | 🔖   | Links and resources to save  |
 
 ## 📋 Example Requests
 
@@ -174,12 +176,12 @@ curl -X PATCH http://localhost:3002/api/todos/{id}/complete
 
 ## 🔗 Related Projects
 
-| Project | Repository | Description |
-|---------|------------|-------------|
-| Life Notes Frontend | [life-notes](https://github.com/BalajiJ234/life-notes) | React/Next.js frontend |
-| Wealth Pulse API | [wealth-pulse-api](https://github.com/BalajiJ234/wealth-pulse-api) | Finance API |
-| Personal Assistant | [personal-assistant](https://github.com/BalajiJ234/personal-assistant) | AI orchestrator |
-| Life-Sync Gateway | [life-sync-2.0](https://github.com/BalajiJ234/life-sync-2.0) | Docs & gateway |
+| Project             | Repository                                                             | Description            |
+| ------------------- | ---------------------------------------------------------------------- | ---------------------- |
+| Life Notes Frontend | [life-notes](https://github.com/BalajiJ234/life-notes)                 | React/Next.js frontend |
+| Wealth Pulse API    | [wealth-pulse-api](https://github.com/BalajiJ234/wealth-pulse-api)     | Finance API            |
+| Personal Assistant  | [personal-assistant](https://github.com/BalajiJ234/personal-assistant) | AI orchestrator        |
+| Life-Sync Gateway   | [life-sync-2.0](https://github.com/BalajiJ234/life-sync-2.0)           | Docs & gateway         |
 
 ## 📜 License
 
