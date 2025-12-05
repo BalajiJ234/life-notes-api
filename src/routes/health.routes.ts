@@ -3,7 +3,7 @@ import { Router, Request, Response } from 'express';
 const router = Router();
 
 // GET /api/health - Health check endpoint
-router.get('/', (_req: Request, res: Response) => {
+router.get('/', (_req: Request, res: Response): void => {
   res.json({
     success: true,
     data: {
@@ -12,7 +12,7 @@ router.get('/', (_req: Request, res: Response) => {
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
       environment: process.env.NODE_ENV || 'development',
-      version: '1.0.0',
+      version: '1.0.1',
     },
   });
 });
